@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro ID Studio Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+</head>
+
+<body>
+
+    <div class="studio-container">
+        <!-- LEFT PANEL: Tabbed Form Controls -->
+        <div class="studio-sidebar">
+            <div class="studio-brand">
+                <h2>ID CARD STUDIO</h2>
+                <p>v2.0 Premium Engine</p>
+            </div>
+
+            <!-- Tab Switcher Header Nav Links -->
+            <div class="tabs-nav">
+                <button type="button" class="tab-link active" data-tab="tab-personal">Identity</button>
+                <button type="button" class="tab-link" data-tab="tab-contact">Metadata</button>
+                <button type="button" class="tab-link" data-tab="tab-assets">Media & Export</button>
+            </div>
+
+            <form id="idForm" class="studio-form">
+                <!-- TAB 1: Personal Identity -->
+                <div id="tab-personal" class="tab-content active">
+                    <div class="form-group">
+                        <label for="inputName">Full Name</label>
+                        <input type="text" id="inputName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSignText">Signature Text</label>
+                        <input type="text" id="inputSignText" placeholder="J. Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRole">Job Title / Role</label>
+                        <input type="text" id="inputRole" placeholder="Software Engineer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputID">Employee/Student ID</label>
+                        <input type="text" id="inputID" placeholder="STU-2026-99" required>
+                    </div>
+                </div>
+
+                <!-- TAB 2: Metadata & Contact -->
+                <div id="tab-contact" class="tab-content">
+                    <div class="form-group">
+                        <label for="inputMobile">Mobile Number</label>
+                        <input type="text" id="inputMobile" placeholder="+91 0000000000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDOB">Date of Birth</label>
+                        <input type="date" id="inputDOB" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Full Address</label>
+                        <input type="text" id="inputAddress" placeholder="123 Main St, New York" required>
+                    </div>
+                </div>
+
+                <!-- TAB 3: Media & Processing Operations -->
+                <div id="tab-assets" class="tab-content">
+                    <div class="form-group">
+                        <label for="inputPhoto">Upload Profile Portrait</label>
+                        <div class="upload-trigger-box" onclick="document.getElementById('inputPhoto').click()">
+                            <span>📷 Select Image File</span>
+                        </div>
+                        <input type="file" id="inputPhoto" accept="image/*" style="display: none;">
+                    </div>
+                    
+                    <div class="action-buttons-group">
+                        <button type="button" id="downloadFrontBtn" class="btn-action-front">🖼️ Download Front Face (PNG)</button>
+                        <button type="button" id="downloadBackBtn" class="btn-action-back">🖼️ Download Back Face (PNG)</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- RIGHT PANEL: Blueprint Drafting Canvas Area -->
+        <div class="studio-canvas">
+            <div class="canvas-header-bar">
+                <div class="theme-selector">
+                    <button type="button" class="theme-btn active" data-theme="theme-default">Corporate Blue</button>
+                    <button type="button" class="theme-btn" data-theme="theme-dark">Midnight Tech</button>
+                    <button type="button" class="theme-btn" data-theme="theme-executive">Emerald Executive</button>
+                </div>
+            </div>
+
+            <!-- The Protected Interactive 3D Target Housing Wrapper -->
+            <div class="id-card-wrapper">
+                <div class="id-card theme-default" id="idCard">
+                    <!-- Front View Face -->
+                    <div class="card-face card-front">
+                        <div class="card-header">
+                            <h3>LEGEND CORP</h3>
+                            <p>Identification Card</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="photo-area">
+                                <img id="cardPhoto"
+                                    src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z'/></svg>"
+                                    alt="Profile Picture">
+                            </div>
+                            <div class="details-area">
+                                <h1 id="cardName">John Doe</h1>
+                                <p class="role" id="cardRole">Software Engineer</p>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="sig-col">
+                                <div class="sig-wrap emp-sig" id="cardEmpSign">John Doe</div>
+                                <p>Employee Sign</p>
+                            </div>
+                            <div class="sig-col">
+                                <div class="sig-wrap ceo-sig">Legend Azhan</div>
+                                <p>CEO Signature</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Back View Face -->
+                    <div class="card-face card-back">
+                        <div class="card-header">
+                            <h3>LEGEND CORP</h3>
+                            <p>Security Verification</p>
+                        </div>
+                        <div class="card-body back-body">
+                            <div class="qr-area">
+                                <p class="qr-instruction">Scan to Verify Details</p>
+                                <img id="cardQR"
+                                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Name:%20John%20Doe"
+                                    alt="QR Code">
+                            </div>
+                            <div class="barcode-area">
+                                <svg id="cardBarcode"></svg>
+                            </div>
+                            <div class="terms-area">
+                                <p>This card is the property of LEGEND CORP. It must be carried at all times while on company premises. If found, please return to the nearest HR department or mail slot.</p>
+                            </div>
+                        </div>
+                        <div class="card-footer back-footer">
+                            <p>Property of Legend Corp &copy; 2026</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-footer-controls">
+                <button type="button" id="flipBtn" class="btn-canvas-flip">🔄 Flip Card 3D Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CROPPING MODAL OVERLAY -->
+    <div id="cropModal" class="modal-overlay">
+        <div class="modal-card">
+            <h3>Adjust Profile Portrait</h3>
+            <div class="img-container">
+                <img id="imageToCrop" src="" alt="Source Image">
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="cancelCropBtn" class="btn-secondary">Cancel</button>
+                <button type="button" id="saveCropBtn" class="btn-primary">Lock & Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
